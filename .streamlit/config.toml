@@ -1,0 +1,10 @@
+[server]
+
+runOnSave = true
+
+
+[theme]
+primaryColor="#F63366"
+backgroundColor="#FFFFFF"
+textColor="#252525"
+font="roboto"
