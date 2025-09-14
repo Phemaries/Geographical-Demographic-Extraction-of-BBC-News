@@ -1,0 +1,33 @@
+# gitignore template for Jupyter Notebooks
+# website: http://jupyter.org/
+
+
+# Flask stuff:
+instance/
+.webassets-cache
+
+# Scrapy stuff:
+.scrapy
+
+# Sphinx documentation
+docs/_build/
+
+# PyBuilder
+.pybuilder/
+target/
+
+
+# Environments
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+distilbert-mnli-model.zip
+distilbert-mnli-model.zip/
+distilbert-mnli-model/
+
+.streamlit/
