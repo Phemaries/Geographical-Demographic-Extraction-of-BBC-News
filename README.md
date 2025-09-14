@@ -1,6 +1,6 @@
 # 🌍 Multi-Stage Pipeline for BBC News (2022–2024): Geographical & Demographic Extraction, Zero-Shot Category Prediction, and Interactive Streamlit Dashboards
 
-This project provides a **multi-stage pipeline** to process raw BBC news articles, extract geographical and demographic entities, and visualize insights through interactive **Streamlit dashboards**. The dataset utilized for this project can be found on Kaggle. [Download here](https://www.kaggle.com/datasets/gpreda/bbc-news/data). The dataset consist of articles and titles published from **March, 2022 to December, 2024.**
+This project provides a **multi-stage pipeline** to process raw BBC news articles, extract geographical and demographic entities, and visualize insights through interactive **Streamlit dashboards**. The dataset utilized for this project can be found on Kaggle. [Download here](https://www.kaggle.com/datasets/gpreda/bbc-news/data). The dataset (~40K unique values) consist of articles and titles published from **March, 2022 to December, 2024.** 
 
 The workflow includes:  
 - **Data Preparation (Stage 1):** Extracting and standardizing countries, cities, and nationalities from raw BBC articles.  
@@ -45,8 +45,8 @@ NEWS_PROJECT/
 
 **Clone the Repositiory**
 ``` bash
-git clone https://github.com/your-username/bbc-news-dashboard.git
-cd bbc-news-dashboard
+git clone https://github.com/Phemaries/Geographical-Demographic-Extraction-of-BBC-News.git
+cd <folder>
 ```
 **Create & activate virtual environment**
 ``` bash
@@ -62,7 +62,7 @@ pip install -r requirements.txt
 
 &nbsp;
 
-**Stage 1 – Data Preprocessing**
+### Stage 1 – Data Preprocessing
 
 *Transforms raw BBC news into a structured dataset with countries, cities, and nationalities"*
 
@@ -90,7 +90,7 @@ By integrating tools such as pandas, geopandas, plotly, and streamlit, the proje
 
 &nbsp;
 
-**Stage 2 – Geographical Analysis Dashboard**
+### Stage 2 – Geographical Analysis Dashboard
 
 *Interactive exploration of BBC coverage across countries, cities, and identities.*
 ```
@@ -151,7 +151,7 @@ streamlit run exploration.py
 
 &nbsp;
 
-**Stage 3 – Sentiment & Category Dashboard**
+### Stage 3 – Sentiment & Category Dashboard
 
 `*Sentiment Analysis with Hugging Face*`
 
@@ -207,6 +207,7 @@ It processes a dataset of text news records, assigns predicted categories, and e
   label_country('Technology')
 
 
+*Fine-tune model to your taste. ~10K unique values were categorized. If running on GPU, increase the batch size and use ~40K values instead*
 ```
 ***Load classifier***
 device = 0 if torch.cuda.is_available() else -1
@@ -309,3 +310,7 @@ streamlit run prediction.py
   streamlit run your_script.py
   ```
 
+**Caveat**
+* This dataset is not up to date has it is limited within 3 year span (2022 - 2024). A longer span of dataset may generate better insight and rich data exploration
+
+* For prediction labelling, 10,000 unique text values were utilized, instead of ~40K unique values used for exploration (Geographical Analysis Dashboard) 
