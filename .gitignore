@@ -23,6 +23,7 @@ target/
 env/
 venv/
 ENV/
+newsenv/
 env.bak/
 venv.bak/
 
