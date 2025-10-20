@@ -1,0 +1,171 @@
+*** MAIN PREDICTION ***
+# Sentiment Analysis with Hugging Face
+
+This script performs **zero-shot text classification** on news data using Hugging Face’s `transformers` library.  
+It processes a dataset of text news records, assigns predicted categories, and explores how these categories relate to **countries, cities, and nationalities** mentioned in the dataset.  
+
+---
+
+## Key Steps & Functionality
+
+1. **Data Preparation**  
+   - Loads raw news text data from `dataset/new_data.csv`.  
+   - Removes duplicate text entries.  
+   - Cleans and standardizes categorical fields (e.g., nationalities → stripping plural forms).  
+
+2. **Prediction with Hugging Face**  
+   - Uses a **DistilBERT (MNLI) zero-shot classifier**.  
+   - Candidate labels include:  
+     `["sports", "politics", "business", "science", "climate", "weather", "entertainment", "travel", "crime", "war", "technology", "health", "education", "accidents"]`  
+   - Runs classification in **batches** (default size: 32) for efficient processing.  
+   - Saves predictions to `dataset/prediction.csv`.  
+
+3. **Merging Predictions with Metadata**  
+   - Combines original dataset with new predicted categories.  
+   - Cleans and standardizes names (countries, cities, nationalities).  
+   - Creates an enriched dataset saved as `dataset/pred_streamlit.csv` for later visualization.  
+
+4. **Exploratory Analysis & Visualizations**  
+   - **Category Distribution:** Overall frequency of predicted labels.  
+   - **Country-Level Analysis (`country_labels`)** → News categories most associated with a given country.  
+   - **City-Level Analysis (`city_labels`)** → News categories most associated with a given city.  
+   - **Nationality-Level Analysis (`nat_labels`)** → News categories tied to a nationality.  
+   - **Global Spread of Categories (`label_country`)** → Choropleth world map showing prevalence of a given label across countries.  
+
+5. **Visualization Libraries Used**  
+   - `matplotlib` → general plots.  
+   - `plotly.express` → interactive bar charts & choropleths.  
+   - `geopandas`, `geonamescache`, `shapely` → geographic data handling.  
+
+---
+
+## Usage
+- Adjust **batch size** depending on hardware (larger if GPU is available).  
+- Replace `"./distilbert-mnli-model"` with a Hugging Face model path if needed.  
+- Example calls:  
+  ```python
+  country_labels('Italy')
+  city_labels('Gaza')
+  nat_labels('Chinese')
+  label_country('Technology')
+
+
+*** PREDICTION STREAMLIT APP ***
+
+# Sentiment Analysis Dashboard with Streamlit
+
+This project provides an **interactive dashboard** for exploring categorized news data using Streamlit. It visualizes relationships between predicted categories (from a Hugging Face zero-shot classification pipeline) and metadata such as countries, cities, and nationalities. Users can explore distributions of news categories, view choropleth maps of global category prevalence, and analyze how specific countries, cities, or nationalities are associated with different news categories.
+
+---
+
+## Key Features & Functionality
+
+1. **Data Loading & Preprocessing**  
+   - Reads enriched predictions dataset (`pred_streamlit.csv`).  
+   - Standardizes text fields (capitalization for consistency).  
+
+2. **Dashboard Structure**  
+   - Built with **Streamlit** for interactive exploration.  
+   - Responsive layout with multiple analysis sections.  
+
+3. **Visual Analysis Modules**  
+
+   - **Global Category Prevalence (`label_country`)**  
+     - Choropleth map showing worldwide distribution of a selected news category.  
+     - Uses `plotly.express` with ISO3 country codes from `geonamescache`.  
+
+   - **Overall Category Distribution (`category_label`)**  
+     - Interactive bar chart of category frequencies across the dataset.  
+
+   - **Country-Specific Analysis (`country_labels`)**  
+     - Displays which news categories are most associated with a selected country.  
+
+   - **City-Specific Analysis (`city_labels`)**  
+     - Bar chart of categories tied to a selected city.  
+
+   - **Nationality-Specific Analysis (`nat_labels`)**  
+     - Bar chart of categories connected to a selected nationality/ideology.  
+
+4. **Visualization Libraries Used**  
+   - `plotly.express` → interactive bar charts & choropleths.  
+   - `matplotlib` → general plots (minimal usage here).  
+   - `geonamescache`, `geopandas`, `shapely` → geographic data management.  
+
+---
+
+## Usage
+- Run the dashboard with:  
+  ```bash
+  streamlit run your_script.py
+
+
+
+*** EXPLORATION ***
+Introduction
+
+This project explores the intersection of textual data analysis and geographical representation using a BBC News dataset. News articles often mention countries, cities, nationalities, and ideologies, which can be systematically extracted to study global narratives and sentiment distribution.
+
+The workflow begins with data cleaning and normalization, addressing inconsistencies in country names, nationalities, and city references (e.g., “USA” → “United States,” “Russians” → “Russian”). After preprocessing, the dataset is visualized through interactive geographical maps and bar charts. These visualizations allow for an examination of:
+
+Global coverage of news mentions across countries.
+
+City-level granularity, highlighting urban centers associated with particular nations.
+
+Identity linkages, where nationalities and ideologies are connected to specific countries and cities.
+
+By integrating tools such as pandas, geopandas, plotly, and streamlit, the project provides an interactive platform that supports both exploratory data analysis and geo-spatial storytelling. This approach enables users to move beyond raw text, uncovering patterns in how global events are framed across geographical and cultural dimensions.
+
+
+
+*** EXPLORATION STREAMLIT APP ***
+# BBC News Coverage & Geographical Analysis Dashboard
+
+This Streamlit application visualizes **how BBC News articles mention countries, cities, and nationalities/ideologies** across the globe.  
+It provides multiple interactive modules that combine geographical mapping with categorical analysis.
+
+---
+
+## Key Features & Functionality
+
+1. **Data Loading & Preprocessing**  
+   - Loads the dataset: `new_data.csv`.  
+   - Cleans up and standardizes:
+     - `nationality` field (e.g., replacing "MUSLIM" → "ISLAM").  
+     - City names (`"MEXICO"` → `"MEXICO CITY"`, `"CARACAS,"` → `"CARACAS"`).  
+
+2. **Dashboard Structure**  
+   - Built entirely with **Streamlit**.  
+   - Divided into **five analysis sections**.  
+   - Each section includes an interactive dropdown for country selection.  
+
+3. **Analysis Modules**
+
+   - **Global News Coverage (Choropleth)**  
+     - A choropleth map shows **how frequently countries are mentioned**.  
+     - Uses `geonamescache` + ISO3 codes for accurate mapping.  
+
+   - **Cities Mentioned within a Country**  
+     - Geo-scatter plot showing **cities located inside the chosen country**.  
+     - Bubble size reflects number of mentions.  
+
+   - **Global Cities Associated with a Country**  
+     - Geo-scatter plot of **cities worldwide** that are frequently mentioned **alongside the chosen country**.  
+
+   - **Nationality/Ideology Mentions per Country**  
+     - Horizontal bar chart showing **top nationalities/ideologies** associated with the selected country.  
+
+   - **Nationality–City Relationships**  
+     - Bubble chart connecting **cities** and **nationalities/ideologies** within a country.  
+
+4. **Visualization Tools**  
+   - `plotly.express` → interactive maps, bar charts, and bubble charts.  
+   - `geonamescache` → country/city coordinates & ISO mapping.  
+   - `pandas` → data aggregation and grouping.  
+
+---
+
+## Usage
+
+- Run the dashboard with:  
+  ```bash
+  streamlit run your_script.py
